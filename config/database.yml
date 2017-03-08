@@ -1,6 +1,6 @@
 development:
   adapter: 'postgresql'
-  database: 'bairdconklinmath_dev'
+  database: 'bairdconklinmath_devevelopment'
   pool: 5
   timeout: 5000
 
@@ -12,7 +12,6 @@ test:
 
 production:
   adapter: 'postgresql'
-  database: 'bairdconklinmath'
-  host: 'localhost'
+  database: 'bairdconklinmath_productin'
   pool: 5
   timeout: 5000
