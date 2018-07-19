@@ -41,7 +41,7 @@ var START = 0.0; // middle 4 squares where starting pieces are
 // 07,17,27,37,47,57,67,77
 
 function initReversi() {
-  canvas = document.getElementById("myCanvas");
+  canvas = document.getElementById("reversiCanvas");
   canvas.addEventListener("mousedown", processMouseClick, false);
   turn = 1;
   board = new Array(8);
@@ -121,7 +121,7 @@ function initReversi() {
 }
 
 function disableClicks() {
-  canvas = document.getElementById("myCanvas");
+  canvas = document.getElementById("reversiCanvas");
   canvas.removeEventListener("mousedown", processMouseClick);
 }
 
@@ -266,7 +266,7 @@ function makeMove(x, y) {
       message:message,
       lastX:lastX,
       lastY:lastY
-    };    
+    };
     undoStack.push(currentGameState);
     // For highlighting last move
     lastX = x;
@@ -778,7 +778,7 @@ function undo() {
       message:message,
       lastX:lastX,
       lastY:lastY
-    };    
+    };
     redoStack.push(currentGameState);
     var previousGameState = undoStack.pop();
     board = previousGameState.board;
@@ -810,7 +810,7 @@ function redo() {
       message:message,
       lastX:lastX,
       lastY:lastY
-    };    
+    };
     undoStack.push(currentGameState);
     var nextGameState = redoStack.pop();
     board = nextGameState.board;
@@ -849,7 +849,7 @@ function getValidMoves(tmpBoard, tmpTurn) {
 
 function randomMove() {
   var validMoves = getValidMoves(board, turn);
-  var move = Math.floor((Math.random() * validMoves.length)); 
+  var move = Math.floor((Math.random() * validMoves.length));
   makeMove(validMoves[move][0], validMoves[move][1]);
 }
 
@@ -998,4 +998,3 @@ function calculateHeuristic(tmpBoard, tmpTurn, x, y) {
   }
   return value + currentPieceBonus
 }
-
