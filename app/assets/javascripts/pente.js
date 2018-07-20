@@ -145,6 +145,6 @@ function drawPenteBoard() {
   ctx.stroke();
 }
 
-fuction drawPieces() {
-  
+function drawPieces() {
+  // TODO: implement this method
 }
