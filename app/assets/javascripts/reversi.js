@@ -249,7 +249,6 @@ function clearBoard() {
   }
 }
 
-
 function processMouseClick(event) {
   var x = Math.floor((event.pageX - canvas.offsetLeft - 3)/50);
   var y = Math.floor((event.pageY - canvas.offsetTop - 3)/50);
@@ -908,6 +907,7 @@ function bestPosition() {
 
 function minimax(depth) {
   var validMoves = getValidMoves(board, turn);
+  // Adjust search depth depending on the number of valid moves
   if (validMoves.length < 5) {
     depth++;
   }

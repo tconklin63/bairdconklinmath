@@ -1,26 +1,25 @@
-var canvas;
-var board;
+var board; // 2D Array containing the current game state
+var canvas; // HTML canvas object, graphical representation of board
 
 function initPente() {
   canvas = document.getElementById("penteCanvas");
+  board = new Array(19);
+  newPenteGame();
   drawPenteBoard();
-}
+s}
 
 function drawPenteBoard() {
-  // TODO: refactor line and cirlce methods
+  // TODO: refactor line and circle methods
   var ctx = canvas.getContext("2d");
   var bgColor = "#640000";
   var boardColor = "#FFFF96"
   var lineColor = "#000000"
-
   // background
   ctx.fillStyle = bgColor;
   ctx.fillRect(0,0,550,550);
-
   // board
   ctx.fillStyle = boardColor;
   ctx.fillRect(45, 45, 460, 460);
-
   // border lines
   ctx.strokeStyle = lineColor;
   ctx.moveTo(44, 44);
@@ -35,7 +34,6 @@ function drawPenteBoard() {
   ctx.moveTo(44, 44);
   ctx.lineTo(505, 44);
   ctx.stroke();
-
   // grid lines
   for (var i = 50; i <= 500; i += 25) {
     ctx.moveTo(i, 50);
@@ -47,8 +45,7 @@ function drawPenteBoard() {
     ctx.lineTo(500, i);
     ctx.stroke();
   }
-
-  // center lines
+  // bold center lines
   ctx.moveTo(274, 50);
   ctx.lineTo(274, 500);
   ctx.stroke();
@@ -61,7 +58,6 @@ function drawPenteBoard() {
   ctx.moveTo(50, 276);
   ctx.lineTo(500, 276);
   ctx.stroke();
-
   // dots at grid intersections
   ctx.beginPath();
   ctx.arc(125, 125, 4, 0, 2*Math.PI);
@@ -99,13 +95,11 @@ function drawPenteBoard() {
   ctx.beginPath();
   ctx.arc(425, 425, 4, 0, 2*Math.PI);
   ctx.fill();
-
   // center dot
   ctx.fillStyle = bgColor;
   ctx.beginPath();
   ctx.arc(275, 275, 4, 0, 2*Math.PI);
   ctx.fill();
-
   // dot outlines
   ctx.beginPath();
   ctx.arc(125, 125, 4, 0, 2*Math.PI);
@@ -145,6 +139,20 @@ function drawPenteBoard() {
   ctx.stroke();
 }
 
-function drawPieces() {
-  // TODO: implement this method
+function drawPentePieces() {
+  // TODO: implement this function
+}
+
+function newPenteGame() {
+  // TODO: implement this function
+  clearPenteBoard();
+}
+
+function clearPenteBoard() {
+  for (var i=0; i<19; i++) {
+    board[i] = new Array(19);
+    for (var j=0; j<19; j++) {
+      board[i][j] = 0;
+    }
+  }
 }
