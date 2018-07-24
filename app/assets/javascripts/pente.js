@@ -52,54 +52,26 @@ function drawPenteBoard() {
   ctx.fillRect(45, 45, 460, 460);
   // border lines
   ctx.strokeStyle = lineColor;
-  ctx.moveTo(44, 44);
-  ctx.lineTo(44, 505);
-  ctx.stroke();
-  ctx.moveTo(45, 44);
-  ctx.lineTo(45, 505);
-  ctx.stroke();
-  ctx.moveTo(44, 45);
-  ctx.lineTo(505, 45);
-  ctx.stroke();
-  ctx.moveTo(44, 44);
-  ctx.lineTo(505, 44);
-  ctx.stroke();
-  ctx.moveTo(505, 44);
-  ctx.lineTo(505, 505);
-  ctx.stroke();
-  ctx.moveTo(504, 44);
-  ctx.lineTo(504, 505);
-  ctx.stroke();
-  ctx.moveTo(45, 505);
-  ctx.lineTo(505, 505);
-  ctx.stroke();
-  ctx.moveTo(45, 504);
-  ctx.lineTo(505, 504);
-  ctx.stroke();
+  drawLine(ctx, 44, 44, 44, 505)
+  drawLine(ctx, 45, 45, 45, 505)
+  drawLine(ctx, 44, 45, 505, 45)
+  drawLine(ctx, 44, 44, 505, 44)
+  drawLine(ctx, 505, 44, 505, 505)
+  drawLine(ctx, 504, 44, 504, 505)
+  drawLine(ctx, 45, 505, 505, 505)
+  drawLine(ctx, 45, 504, 505, 504)
   // grid lines
   for (var i = 50; i <= 500; i += 25) {
-    ctx.moveTo(i, 50);
-    ctx.lineTo(i, 500);
-    ctx.stroke();
+    drawLine(ctx, i, 50, i, 500)
   }
   for (var i = 50; i <= 500; i += 25) {
-    ctx.moveTo(50, i);
-    ctx.lineTo(500, i);
-    ctx.stroke();
+    drawLine(ctx, 50, i, 500, i)
   }
   // bold center lines
-  ctx.moveTo(274, 50);
-  ctx.lineTo(274, 500);
-  ctx.stroke();
-  ctx.moveTo(276, 50);
-  ctx.lineTo(276, 500);
-  ctx.stroke();
-  ctx.moveTo(50, 274);
-  ctx.lineTo(500, 274)
-  ctx.stroke();
-  ctx.moveTo(50, 276);
-  ctx.lineTo(500, 276);
-  ctx.stroke();
+  drawLine(ctx, 274, 50, 274, 500)
+  drawLine(ctx, 276, 50, 276, 500)
+  drawLine(ctx, 50, 274, 500, 274)
+  drawLine(ctx, 50, 276, 500, 276)
   // dots at grid intersections
   ctx.beginPath();
   ctx.arc(125, 125, 4, 0, 2*Math.PI);
@@ -217,4 +189,10 @@ function initPenteBoard() {
       board[i][j] = 0;
     }
   }
+}
+
+function drawLine(ctx, startX, startY, endX, endY) {
+  ctx.moveTo(startX, startY);
+  ctx.lineTo(endX, endY);
+  ctx.stroke();
 }
