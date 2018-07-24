@@ -1,5 +1,20 @@
 var board; // 2D Array containing the current game state
 var canvas; // HTML canvas object, graphical representation of board
+var currentPlayer; // red=1, blue=-1
+var undoStack; // Array of game states
+var redoStack; // Array of games states
+var redCaptures = 0;
+var blueCaptures = 0;
+var redMove = 0;
+var message = "";
+
+// constants
+var UNOCCUPIED = 0;
+var RED = 1;
+var BLUE = -1;
+var NEITHER = 0;
+
+// Colors
 var bgColor = "#640000";
 var boardColor = "#FFFF96";
 var lineColor = "#000000";
@@ -8,9 +23,22 @@ var player2Color = "#0000CC";
 
 function initPente() {
   canvas = document.getElementById("penteCanvas");
-  board = new Array(18);
+  canvas.addEventListener("mousedown", processPenteMouseClick, false);
   newPenteGame();
-  drawPenteBoard();
+}
+
+function processPenteMouseClick(event) {
+  var x = Math.floor((event.pageX - canvas.offsetLeft - 37.5)/25);
+  var y = Math.floor((event.pageY - canvas.offsetTop - 37.5)/25);
+  makePenteMove(x, y);
+}
+
+function makePenteMove(x, y) {
+  if (board[x][y] == UNOCCUPIED) {
+    board[x][y] = currentPlayer;
+    currentPlayer = -currentPlayer
+    drawPenteBoard();
+  }
 }
 
 function drawPenteBoard() {
@@ -151,14 +179,6 @@ function drawPenteBoard() {
   ctx.beginPath();
   ctx.arc(425, 425, 4, 0, 2*Math.PI);
   ctx.stroke();
-  // TODO: remove test pieces onces drawing is implemented
-  // Begin test drawing of pieces
-  board[9][9] = 1;
-  board[10][9] = 1;
-  board[7][7] = -1;
-  board[8][8] = -1;
-  board[0][0] = 1;
-  board[18][18] = -1;
   // End test drawing of pieces
   drawPentePieces(ctx)
 }
@@ -166,13 +186,13 @@ function drawPenteBoard() {
 function drawPentePieces(ctx) {
   for (var i = 0; i < 19; i++) {
     for (var j = 0; j < 19; j++) {
-      if (board[i][j] == 1) {
+      if (board[i][j] == RED) {
         ctx.fillStyle = player1Color;
         ctx.beginPath();
         ctx.arc(i*25+50, j*25+50, 10, 0, 2*Math.PI);
         ctx.fill();
       }
-      if (board[i][j] == -1) {
+      if (board[i][j] == BLUE) {
         ctx.fillStyle = player2Color
         ctx.beginPath();
         ctx.arc(i*25+50, j*25+50, 10, 0, 2*Math.PI);
@@ -183,11 +203,14 @@ function drawPentePieces(ctx) {
 }
 
 function newPenteGame() {
-  clearPenteBoard();
-  // TODO: finish implementing this
+  // TODO: clear undo and redo stacks
+  board = new Array(19);
+  currentPlayer = RED;
+  initPenteBoard();
+  drawPenteBoard();
 }
 
-function clearPenteBoard() {
+function initPenteBoard() {
   for (var i=0; i<19; i++) {
     board[i] = new Array(19);
     for (var j=0; j<19; j++) {
