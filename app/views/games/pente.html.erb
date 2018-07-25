@@ -3,8 +3,11 @@
     <%= render :partial => 'shared/flash_messages'%>
     <h1 class="text-center">Pente</h1>
     <button class="btn btn-success" type="button" onclick="newPenteGame();">new game</button>
-    <button class="btn btn-danger" type="button" onclick="undoPenteMove();">undo</button>
-    <button class="btn btn-primary" type="button" onclick="redoPenteMove();">redo</button><br/>
+    <button class="btn btn-warning" type="button" onclick="undoPenteMove();">undo</button>
+    <button class="btn btn-info" type="button" onclick="redoPenteMove();">redo</button><br/>
+    <h4 class="text-left">Captures</h4>
+    <button class="btn btn-danger" type="button" id="red_captures">0</button>
+    <button class="btn btn-primary" type="button" id="blue_captures">0</button>
     <br/>
     <br/>
     <div class='message text-center large-text' id='message'>&nbsp;</div>
