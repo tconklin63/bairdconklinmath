@@ -3,12 +3,15 @@
     <%= render :partial => 'shared/flash_messages'%>
     <h1 class="text-center">Pente</h1>
     <button class="btn btn-success" type="button" onclick="newPenteGame();">new game</button>
+    <button class="btn btn-danger" type="button" onclick="undoPenteMove();">undo</button>
+    <button class="btn btn-primary" type="button" onclick="redoPenteMove();">redo</button><br/>
+    <br/>
+    <br/>
     <div class='message text-center large-text' id='message'>&nbsp;</div>
     <div class='error text-center large-text' id='alertMessage'>&nbsp;</div>
     <div class="text-center">
       <canvas id="penteCanvas" width="550" height="550" style="border:2px solid #000000;"></canvas>
     </div>
-    <div class='message text-center large-text' id='score'>&nbsp;</div>
     <%= link_to 'back', '/' %>
   </div>
 </div>

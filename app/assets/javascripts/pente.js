@@ -1,12 +1,13 @@
 var board; // 2D Array containing the current game state
 var canvas; // HTML canvas object, graphical representation of board
-var currentPlayer; // red=1, blue=-1
+var turn; // red=1, blue=-1
 var undoStack; // Array of game states
 var redoStack; // Array of games states
 var redCaptures = 0;
 var blueCaptures = 0;
 var redMove = 0;
-var message = "";
+var message = "&nbsp;";
+var alertMessage = "&nbsp;";
 
 // constants
 var UNOCCUPIED = 0;
@@ -34,11 +35,26 @@ function processPenteMouseClick(event) {
 }
 
 function makePenteMove(x, y) {
+  alertMessage = "&nbsp;"
+  var currentGameState = {
+    board:copyPenteBoard(board),
+    turn:turn,
+    message:message,
+    redCaptures:redCaptures,
+    blueCaptures:blueCaptures,
+    redMove:redMove
+  };
+  undoStack.push(currentGameState);
+  console.log(undoStack)
   if (board[x][y] == UNOCCUPIED) {
-    board[x][y] = currentPlayer;
-    currentPlayer = -currentPlayer
+    board[x][y] = turn;
+    turn = -turn
     drawPenteBoard();
+    drawPenteBoard(); // To fix the phantom circle problem
+  } else {
+    alertMessage = "Space is already occupied"
   }
+  displayPenteMessages();
 }
 
 function drawPenteBoard() {
@@ -121,9 +137,12 @@ function drawPentePieces(ctx) {
 function newPenteGame() {
   // TODO: clear undo and redo stacks
   board = new Array(19);
-  currentPlayer = RED;
+  turn = RED;
+  undoStack = new Array();
+  redoStack = new Array();
   initPenteBoard();
   drawPenteBoard();
+  drawPenteBoard(); // To fix the phantom circle problem
 }
 
 function initPenteBoard() {
@@ -133,4 +152,76 @@ function initPenteBoard() {
       board[i][j] = 0;
     }
   }
+}
+
+function displayPenteMessages() {
+  document.getElementById('message').innerHTML = message;
+  document.getElementById('alertMessage').innerHTML = alertMessage;
+}
+
+function undoPenteMove() {
+  if (undoStack.length == 0) {
+    alertMessage = "Can't undo";
+    displayPenteMessages();
+  } else {
+    alertMessage = '&nbsp;';
+    var currentGameState = {
+      board:copyPenteBoard(board),
+      turn:turn,
+      message:message,
+      redCaptures:redCaptures,
+      blueCaptures:blueCaptures,
+      redMove:redMove
+    };
+    redoStack.push(currentGameState);
+    var previousGameState = undoStack.pop();
+    board = previousGameState.board;
+    turn = previousGameState.turn;
+    message = previousGameState.message;
+    redCaptures = previousGameState.redCaptures;
+    blueCaptures = previousGameState.blueCaptures;
+    redMove = previousGameState.redMove;
+    displayPenteMessages();
+    drawPenteBoard();
+    drawPenteBoard(); // To fix the phantom circle problem
+  }
+}
+
+function redoPenteMove() {
+  if (redoStack.length == 0) {
+    alertMessage = "Can't redo";
+    displayPenteMessages();
+  } else {
+    alertMessage = '&nbsp;';
+    var currentGameState = {
+      board:copyPenteBoard(board),
+      turn:turn,
+      message:message,
+      redCaptures:redCaptures,
+      blueCaptures:blueCaptures,
+      redMove:redMove
+    };
+    undoStack.push(currentGameState);
+    var nextGameState = redoStack.pop();
+    board = nextGameState.board;
+    turn = nextGameState.turn;
+    message = nextGameState.message;
+    redCaptures = nextGameState.lastX;
+    blueCaptures = nextGameState.blueCaptures;
+    redMove = nextGameState.redMove;
+    displayPenteMessages();
+    drawPenteBoard();
+    drawPenteBoard(); // To fix the phantom circle problem
+  }
+}
+
+function copyPenteBoard(b) {
+  var newBoard = new Array(19);
+  for (var i=0; i<19; i++) {
+    newBoard[i] = new Array(8);
+    for (var j=0; j<19; j++) {
+      newBoard[i][j] = b[i][j];
+    }
+  }
+  return newBoard;
 }
