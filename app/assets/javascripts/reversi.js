@@ -115,8 +115,8 @@ function initReversi() {
   positionScore[6][7] = ADJACENT_SIDE;
   positionScore[7][7] = CORNER;
   if (document.getElementById("white").checked) opponent = 1;
-  if (document.getElementbyId("black").checked) opponent = -1;
-  if (document.getElementbyId("human").checked) opponent = 0;
+  if (document.getElementById("black").checked) opponent = -1;
+  if (document.getElementById("human").checked) opponent = 0;
   selectLevel();
 }
 
@@ -132,30 +132,15 @@ function drawBoard() {
   ctx.fillRect(0,0,400,400);
   for (var i=1; i<8; i++) {
     // horizontal board lines
-    ctx.moveTo(0,50*i);
-    ctx.lineTo(400,50*i);
-    ctx.stroke();
+    drawLine(ctx, 0, 50*i, 400, 50*i);
     // vertical board lines
-    ctx.moveTo(50*i,0);
-    ctx.lineTo(50*i,400);
-    ctx.stroke();
+    drawLine(ctx, 50*i, 0, 50*i, 400);
     // dots
-    ctx.beginPath();
-    ctx.arc(100,100,3,0,2*Math.PI);
     ctx.fillStyle = '#000';
-    ctx.fill();
-    ctx.beginPath();
-    ctx.arc(100,300,3,0,2*Math.PI);
-    ctx.fillStyle = '#000';
-    ctx.fill();
-    ctx.beginPath();
-    ctx.arc(300,100,3,0,2*Math.PI);
-    ctx.fillStyle = '#000';
-    ctx.fill();
-    ctx.beginPath();
-    ctx.arc(300,300,3,0,2*Math.PI);
-    ctx.fillStyle = '#000';
-    ctx.fill();
+    fillCircle(ctx, 100, 100, 3);
+    fillCircle(ctx, 100, 300, 3);
+    fillCircle(ctx, 300, 100, 3);
+    fillCircle(ctx, 300, 300, 3);
   }
   // pieces
   for (var i=0; i<8; i++) {
@@ -225,7 +210,7 @@ function selectLevel() {
   level = document.getElementById("level").selectedIndex + 1;
 }
 
-function drawPiece(ctx,x,y,color) {
+function drawPiece(ctx, x, y, color) {
   // Highlight board where last piece was placed
   if (x == lastX && y == lastY) {
     var highlightColor = '#060';
@@ -234,10 +219,8 @@ function drawPiece(ctx,x,y,color) {
     ctx.fillRect(1+x*50,1+y*50,48,48);
   }
   // Draw piece
-  ctx.beginPath();
-  ctx.arc(25+x*50,25+y*50,23,0,2*Math.PI);
   ctx.fillStyle = color;
-  ctx.fill();
+  fillCircle(ctx, 25+x*50, 25+y*50, 23);
 }
 
 function clearBoard() {

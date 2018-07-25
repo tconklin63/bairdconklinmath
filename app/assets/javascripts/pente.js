@@ -52,106 +52,54 @@ function drawPenteBoard() {
   ctx.fillRect(45, 45, 460, 460);
   // border lines
   ctx.strokeStyle = lineColor;
-  drawLine(ctx, 44, 44, 44, 505)
-  drawLine(ctx, 45, 45, 45, 505)
-  drawLine(ctx, 44, 45, 505, 45)
-  drawLine(ctx, 44, 44, 505, 44)
-  drawLine(ctx, 505, 44, 505, 505)
-  drawLine(ctx, 504, 44, 504, 505)
-  drawLine(ctx, 45, 505, 505, 505)
-  drawLine(ctx, 45, 504, 505, 504)
+  drawLine(ctx, 44, 44, 44, 505);
+  drawLine(ctx, 45, 45, 45, 505);
+  drawLine(ctx, 44, 45, 505, 45);
+  drawLine(ctx, 44, 44, 505, 44);
+  drawLine(ctx, 505, 44, 505, 505);
+  drawLine(ctx, 504, 44, 504, 505);
+  drawLine(ctx, 45, 505, 505, 505);
+  drawLine(ctx, 45, 504, 505, 504);
   // grid lines
   for (var i = 50; i <= 500; i += 25) {
-    drawLine(ctx, i, 50, i, 500)
+    drawLine(ctx, i, 50, i, 500);
   }
   for (var i = 50; i <= 500; i += 25) {
-    drawLine(ctx, 50, i, 500, i)
+    drawLine(ctx, 50, i, 500, i);
   }
   // bold center lines
-  drawLine(ctx, 274, 50, 274, 500)
-  drawLine(ctx, 276, 50, 276, 500)
-  drawLine(ctx, 50, 274, 500, 274)
-  drawLine(ctx, 50, 276, 500, 276)
+  drawLine(ctx, 274, 50, 274, 500);
+  drawLine(ctx, 276, 50, 276, 500);
+  drawLine(ctx, 50, 274, 500, 274);
+  drawLine(ctx, 50, 276, 500, 276);
   // dots at grid intersections
-  ctx.beginPath();
-  ctx.arc(125, 125, 4, 0, 2*Math.PI);
-  ctx.fill();
-  ctx.beginPath();
-  ctx.arc(125, 275, 4, 0, 2*Math.PI);
-  ctx.fill();
-  ctx.beginPath();
-  ctx.arc(125, 425, 4, 0, 2*Math.PI);
-  ctx.fill();
-  ctx.beginPath();
-  ctx.arc(200, 200, 4, 0, 2*Math.PI);
-  ctx.fill();
-  ctx.beginPath();
-  ctx.arc(200, 350, 4, 0, 2*Math.PI);
-  ctx.fill();
-  ctx.beginPath();
-  ctx.arc(275, 125, 4, 0, 2*Math.PI);
-  ctx.fill();
-  ctx.beginPath();
-  ctx.arc(275, 425, 4, 0, 2*Math.PI);
-  ctx.fill();
-  ctx.beginPath();
-  ctx.arc(350, 200, 4, 0, 2*Math.PI);
-  ctx.fill();
-  ctx.beginPath();
-  ctx.arc(350, 350, 4, 0, 2*Math.PI);
-  ctx.fill();
-  ctx.beginPath();
-  ctx.arc(425, 125, 4, 0, 2*Math.PI);
-  ctx.fill();
-  ctx.beginPath();
-  ctx.arc(425, 275, 4, 0, 2*Math.PI);
-  ctx.fill();
-  ctx.beginPath();
-  ctx.arc(425, 425, 4, 0, 2*Math.PI);
-  ctx.fill();
-  // center dot
+  fillCircle(ctx, 125, 125, 4);
+  fillCircle(ctx, 125, 275, 4);
+  fillCircle(ctx, 125, 425, 4);
+  fillCircle(ctx, 200, 200, 4);
+  fillCircle(ctx, 200, 350, 4);
+  fillCircle(ctx, 275, 125, 4);
+  fillCircle(ctx, 275, 425, 4);
+  fillCircle(ctx, 350, 200, 4);
+  fillCircle(ctx, 350, 350, 4);
+  fillCircle(ctx, 425, 125, 4);
+  fillCircle(ctx, 425, 275, 4);
+  fillCircle(ctx, 425, 425, 4);
   ctx.fillStyle = bgColor;
-  ctx.beginPath();
-  ctx.arc(275, 275, 4, 0, 2*Math.PI);
-  ctx.fill();
+  fillCircle(ctx, 275, 275, 4);
   // dot outlines
-  ctx.beginPath();
-  ctx.arc(125, 125, 4, 0, 2*Math.PI);
-  ctx.stroke();
-  ctx.beginPath();
-  ctx.arc(125, 275, 4, 0, 2*Math.PI);
-  ctx.stroke();
-  ctx.beginPath();
-  ctx.arc(125, 425, 4, 0, 2*Math.PI);
-  ctx.stroke();
-  ctx.beginPath();
-  ctx.arc(275, 125, 4, 0, 2*Math.PI);
-  ctx.stroke();
-  ctx.beginPath();
-  ctx.arc(275, 425, 4, 0, 2*Math.PI);
-  ctx.stroke();
-  ctx.beginPath();
-  ctx.arc(200, 200, 4, 0, 2*Math.PI);
-  ctx.stroke();
-  ctx.beginPath();
-  ctx.arc(200, 350, 4, 0, 2*Math.PI);
-  ctx.stroke();
-  ctx.beginPath();
-  ctx.arc(350, 200, 4, 0, 2*Math.PI);
-  ctx.stroke();
-  ctx.beginPath();
-  ctx.arc(350, 350, 4, 0, 2*Math.PI);
-  ctx.stroke();
-  ctx.beginPath();
-  ctx.arc(425, 125, 4, 0, 2*Math.PI);
-  ctx.stroke();
-  ctx.beginPath();
-  ctx.arc(425, 275, 4, 0, 2*Math.PI);
-  ctx.stroke();
-  ctx.beginPath();
-  ctx.arc(425, 425, 4, 0, 2*Math.PI);
-  ctx.stroke();
-  // End test drawing of pieces
+  drawCircle(ctx, 125, 125, 4);
+  drawCircle(ctx, 125, 275, 4);
+  drawCircle(ctx, 125, 425, 4);
+  drawCircle(ctx, 275, 125, 4);
+  drawCircle(ctx, 275, 425, 4);
+  drawCircle(ctx, 200, 200, 4);
+  drawCircle(ctx, 200, 350, 4);
+  drawCircle(ctx, 350, 200, 4);
+  drawCircle(ctx, 350, 350, 4);
+  drawCircle(ctx, 425, 125, 4);
+  drawCircle(ctx, 425, 275, 4);
+  drawCircle(ctx, 425, 425, 4);
   drawPentePieces(ctx)
 }
 
@@ -160,15 +108,11 @@ function drawPentePieces(ctx) {
     for (var j = 0; j < 19; j++) {
       if (board[i][j] == RED) {
         ctx.fillStyle = player1Color;
-        ctx.beginPath();
-        ctx.arc(i*25+50, j*25+50, 10, 0, 2*Math.PI);
-        ctx.fill();
+        fillCircle(ctx, i*25+50, j*25+50, 10);
       }
       if (board[i][j] == BLUE) {
         ctx.fillStyle = player2Color
-        ctx.beginPath();
-        ctx.arc(i*25+50, j*25+50, 10, 0, 2*Math.PI);
-        ctx.fill();
+        fillCircle(ctx, i*25+50, j*25+50, 10);
       }
     }
   }
@@ -189,10 +133,4 @@ function initPenteBoard() {
       board[i][j] = 0;
     }
   }
-}
-
-function drawLine(ctx, startX, startY, endX, endY) {
-  ctx.moveTo(startX, startY);
-  ctx.lineTo(endX, endY);
-  ctx.stroke();
 }
