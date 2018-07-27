@@ -36,25 +36,54 @@ function processPenteMouseClick(event) {
 
 function makePenteMove(x, y) {
   alertMessage = "&nbsp;"
-  var currentGameState = {
-    board:copyPenteBoard(board),
-    turn:turn,
-    message:message,
-    redCaptures:redCaptures,
-    blueCaptures:blueCaptures,
-    redMove:redMove
-  };
-  undoStack.push(currentGameState);
-  console.log(undoStack)
-  if (board[x][y] == UNOCCUPIED) {
-    board[x][y] = turn;
-    turn = -turn
-    drawPenteBoard();
-    drawPenteBoard(); // To fix the phantom circle problem
+  if ((turn == RED) && (redMove == 0)
+      && ((x != 9) || (y != 9))) {
+    alertMessage = "First move must be in the center";
+  } else if ((turn == 1) && (redMove == 1) && (x > 6)
+      && (x < 12) && (y > 6) && (y < 12)) {
+    alertMessage = "Second move must be at least 3 away from center";
   } else {
-    alertMessage = "Space is already occupied"
+    var currentGameState = {
+      board:copyPenteBoard(board),
+      turn:turn,
+      message:message,
+      redCaptures:redCaptures,
+      blueCaptures:blueCaptures,
+      redMove:redMove
+    };
+    undoStack.push(currentGameState);
+    if (board[x][y] == UNOCCUPIED) {
+      board[x][y] = turn;
+      turn = -turn
+      capture(x, y);
+      if (turn == RED) {
+        redMove += 1;
+      }
+      var winner = checkForWinner();
+      if (winner == RED) {
+        message = "Game Over. Red wins!";
+      }
+      if (winner == BLUE) {
+        message = "Game Over. Blue wins!";
+      }
+      if (winner != NEITHER) {
+        turn = NEITHER;
+      } else {
+        if (turn == RED) {
+          message = 'Red, your move'
+        } else if (turn == BLUE) {
+          message = 'Blue, your move'
+        } else {
+          message = '&nbsp;'
+        }
+      }
+    } else {
+      alertMessage = "Space is already occupied"
+    }
   }
-  displayPenteMessages();
+  drawPenteBoard();
+  drawPenteBoard(); // To fix the phantom circle problem
+  displayMessages();
 }
 
 function drawPenteBoard() {
@@ -117,6 +146,8 @@ function drawPenteBoard() {
   drawCircle(ctx, 425, 275, 4);
   drawCircle(ctx, 425, 425, 4);
   drawPentePieces(ctx)
+  document.getElementById('red_captures').innHTML = redCaptures;
+  document.getElementById('blue_captures').innerHTML = blueCaptures;
 }
 
 function drawPentePieces(ctx) {
@@ -135,14 +166,15 @@ function drawPentePieces(ctx) {
 }
 
 function newPenteGame() {
-  // TODO: clear undo and redo stacks
   board = new Array(19);
   turn = RED;
   undoStack = new Array();
   redoStack = new Array();
+  message = 'Red, your move'
   initPenteBoard();
   drawPenteBoard();
   drawPenteBoard(); // To fix the phantom circle problem
+  displayPenteMessages();
 }
 
 function initPenteBoard() {
@@ -215,13 +247,159 @@ function redoPenteMove() {
   }
 }
 
-function copyPenteBoard(b) {
+function copyPenteBoard() {
   var newBoard = new Array(19);
   for (var i=0; i<19; i++) {
     newBoard[i] = new Array(8);
     for (var j=0; j<19; j++) {
-      newBoard[i][j] = b[i][j];
+      newBoard[i][j] = board[i][j];
     }
   }
   return newBoard;
+}
+
+function checkForWinner() {
+  if (redCaptures > 4) {
+    return RED;
+  }
+  if (blueCaptures > 4) {
+    return BLUE;
+  }
+  if (redMove < 5) {
+    return NEITHER;
+  }
+  for (var i = 0; i < 19; i++) {
+    for (var j = 0; j < 19; j++) {
+      if (board[i][j] != 0) {
+        var winner = check5(i, j);
+        if (winner != NEITHER) {
+          return winner;
+        }
+      }
+    }
+  }
+  return NEITHER;
+}
+
+function check5(x, y) {
+  var player = board[x][y];
+  var n = 0;
+  if (y < 15) {
+    for (var i = 1; i < 5; i++) {
+      if (board[x][(y + i)] != player) {
+        break;
+      }
+      n++;
+    }
+  }
+  if (n > 3) {
+    return player;
+  }
+  n = 0;
+  if ((x < 15) && (y < 15)) {
+    for (var i = 1; i < 5; i++) {
+      if (board[(x + i)][(y + i)] != player) {
+        break;
+      }
+      n++;
+    }
+  }
+  if (n > 3) {
+    return player;
+  }
+  n = 0;
+  if (x < 15) {
+    for (var i = 1; i < 5; i++) {
+      if (board[(x + i)][y] != player) {
+        break;
+      }
+      n++;
+    }
+  }
+  if (n > 3) {
+    return player;
+  }
+  n = 0;
+  if ((x > 3) && (y < 15)) {
+    for (var i = 1; i < 5; i++) {
+      if (board[(x - i)][(y + i)] != player) {
+        break;
+      }
+      n++;
+    }
+  }
+  if (n > 3) {
+    return player;
+  }
+  return 0;
+}
+
+function capture(x, y) {
+  var countCaptures = 0;
+  if ((y > 2) && (board[x][(y - 1)] == -turn)
+      && (board[x][(y - 2)] == -turn)
+      && (board[x][(y - 3)] == turn)) {
+    board[x][(y - 1)] = UNOCCUPIED;
+    board[x][(y - 2)] = UNOCCUPIED;
+    countCaptures++;
+  }
+  if ((x < 16) && (y > 2)
+      && (board[(x + 1)][(y - 1)] == -turn)
+      && (board[(x + 2)][(y - 2)] == -turn)
+      && (board[(x + 3)][(y - 3)] == turn)) {
+    board[(x + 1)][(y - 1)] = UNOCCUPIED;
+    board[(x + 2)][(y - 2)] = UNOCCUPIED;
+    countCaptures++;
+  }
+  if ((x < 16) && (board[(x + 1)][y] == -turn)
+      && (board[(x + 2)][y] == -turn)
+      && (board[(x + 3)][y] == turn)) {
+    board[(x + 1)][y] = UNOCCUPIED;
+    board[(x + 2)][y] = UNOCCUPIED;
+    countCaptures++;
+  }
+  if ((x < 16) && (y < 16)
+      && (board[(x + 1)][(y + 1)] == -turn)
+      && (board[(x + 2)][(y + 2)] == -turn)
+      && (board[(x + 3)][(y + 3)] == turn)) {
+    board[(x + 1)][(y + 1)] = UNOCCUPIED;
+    board[(x + 2)][(y + 2)] = UNOCCUPIED;
+    countCaptures++;
+  }
+  if ((y < 16) && (board[x][(y + 1)] == -turn)
+      && (board[x][(y + 2)] == -turn)
+      && (board[x][(y + 3)] == turn)) {
+    board[x][(y + 1)] = UNOCCUPIED;
+    board[x][(y + 2)] = UNOCCUPIED;
+    countCaptures++;
+  }
+  if ((x > 2) && (y < 16)
+      && (board[(x - 1)][(y + 1)] == -turn)
+      && (board[(x - 2)][(y + 2)] == -turn)
+      && (board[(x - 3)][(y + 3)] == turn)) {
+    board[(x - 1)][(y + 1)] = UNOCCUPIED;
+    board[(x - 2)][(y + 2)] = UNOCCUPIED;
+    countCaptures++;
+  }
+  if ((x > 2) && (board[(x - 1)][y] == -turn)
+      && (board[(x - 2)][y] == -turn)
+      && (board[(x - 3)][y] == turn)) {
+    board[(x - 1)][y] = UNOCCUPIED;
+    board[(x - 2)][y] = UNOCCUPIED;
+    countCaptures++;
+  }
+  if ((x > 2) && (y > 2)
+      && (board[(x - 1)][(y - 1)] == -turn)
+      && (board[(x - 2)][(y - 2)] == -turn)
+      && (board[(x - 3)][(y - 3)] == turn)) {
+    board[(x - 1)][(y - 1)] = UNOCCUPIED;
+    board[(x - 2)][(y - 2)] = UNOCCUPIED;
+    countCaptures++;
+  }
+  if (turn == RED) {
+    redCaptures += countCaptures;
+  }
+  if (turn == BLUE) {
+    blueCaptures += countCaptures;
+  }
 }
